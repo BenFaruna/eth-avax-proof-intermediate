@@ -14,16 +14,16 @@ contract Functions {
     }
 
     // function demonstrating the use of assert statement
-    function assertFunction() public pure {
-        uint result = div(20, 10);
+    function assertFunction(uint a, uint b) public pure {
+        uint result = div(a, b);
 
-        // Assert that the result is equal to 2, else the transaction will fail
-        assert(result == 2);
+        // Assert that the result is greater than or equal to 2, else the transaction will fail
+        assert(result >= 2);
     }
 
     // function demonstrating the use of revert statement
-    function revertFunction() public pure {
-        uint result = div(20, 5);
+    function revertFunction(uint a, uint b) public pure {
+        uint result = div(a, b);
 
         // Revert the transaction if the result is less than 5
         if (result < 5) {
