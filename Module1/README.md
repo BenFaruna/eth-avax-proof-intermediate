@@ -15,33 +15,22 @@ Once you are on the Remix website, create a new file by clicking on the "+" icon
 
 pragma solidity ^0.8.18;
 
-contract Functions {
+contract ErrorHandling {
+    address public owner;
 
-    // divide 'num2' from 'num1' with a require statement
-    function div(uint num1, uint num2) public pure returns (uint) {
-        // Ensure that 'num2' is not zero to avoid division by zero
-        require(num2 > 0, "Zero division error");
-
-        // Perform the subtraction and return the result
-        return num1 / num2;
+    constructor () {
+        owner =msg.sender;
     }
 
-    // function demonstrating the use of assert statement
-    function assertFunction(uint a, uint b) public pure {
-        uint result = div(a, b);
+    function changeOwner(address newOwner) public {
+        require(msg.sender == owner, "Only owner can set new owner");
+        assert(newOwner != address(0));
 
-        // Assert that the result is greater than or equal to 2, else the transaction will fail
-        assert(result >= 2);
+        owner = newOwner;
     }
 
-    // function demonstrating the use of revert statement
-    function revertFunction(uint a, uint b) public pure {
-        uint result = div(a, b);
-
-        // Revert the transaction if the result is less than 5
-        if (result < 5) {
-            revert("Reverting due to result less 5");
-        }
+    receive() external payable {
+        revert("contract does not accept deposit");
     }
 }
 ```
@@ -50,7 +39,7 @@ To compile the code, click on the "Solidity Compiler" tab in the left-hand sideb
 
 Once the code is compiled, you can deploy the contract by clicking on the "Deploy & Run Transactions" tab in the left-hand sidebar. Select the "ErrorHandling" contract from the dropdown menu, and then click on the "Deploy" button.
 
-Once the contract is deployed, you can interact with it by calling the div, assertFunction and revertFunction function. All functions accept two integer parameters, you can add parameters in the input box seperated by comma (e.g. 10, 5). Click on the "ErrorHandling" contract in the left-hand sidebar, add the parameters to the div input box and then click on the "div" function. Finally, click on the "transact" button to execute the function and retrieve the result of the function.
+Once the contract is deployed, you can interact with it by calling the `changeOwner` function. The function uses `require` to ensure the caller is the owner of the address and `assert` for sanity check (zero address call). The contract also uses the `revert` function to ensure ether is not sent to the contract.
 
 ## Authors
 
