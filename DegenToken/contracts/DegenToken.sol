@@ -20,13 +20,17 @@ contract DegenToken is ERC20, Ownable {
         _burn(msg.sender, amount);
     }
 
+    function balanceOf(address account) public view override returns (uint256) {
+        return super.balanceOf(account);
+    }
+
     function redeem(uint256 itemId, uint256 amount) public {
         require(redeemablesPrices[itemId] > 0, "Item not found");
         require(
             !redeemableOwners[itemId][msg.sender],
             "You already redeemed this item"
         );
-        require(redeemables[itemId] >= amount, "Not enough tokens");
+        require(redeemablesPrices[itemId] >= amount, "Not enough tokens");
         _burn(msg.sender, amount);
         redeemableOwners[itemId][msg.sender] = true;
 

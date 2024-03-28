@@ -18,4 +18,13 @@ contract MyERC20 is ERC20 {
     function burn(uint _amount) public {
         _burn(msg.sender, _amount);
     }
+
+    function transfer(address _receiver, uint _amount) public override returns (bool) {
+        require(_receiver != address(0), "ERC20: transfer to the zero address");
+        require(_amount > 0, "ERC20: transfer amount must be greater than zero");
+        require(balanceOf(msg.sender) >= _amount, "ERC20: transfer amount exceeds balance");
+
+        _transfer(msg.sender, _receiver, _amount);
+        return true;
+    }
 }
